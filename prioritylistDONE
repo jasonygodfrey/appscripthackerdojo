@@ -1,0 +1,25 @@
+function onEdit(e) {
+  // Get the active sheet
+  const src = SpreadsheetApp.getActiveSheet();
+  
+  // Get the edited range
+  const r = e.range;
+  
+  // Check if the "PRIORITY LIST" column (column 2) was edited
+  if (r.getColumn() == 2) {
+    // Get the value of the edited cell
+    const status = r.getValue();
+    
+    // Check if the value is "DONE"
+    if (status == "DONE") {
+      // Get the "DONE" sheet
+      const dest = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("DONE");
+      
+      // Copy the entire row from the source sheet to the "DONE" sheet
+      src.getRange(r.getRow(), 1, 1, src.getLastColumn()).copyTo(dest.getRange(dest.getLastRow() + 1, 1));
+      
+      // Delete the row from the source sheet
+      src.deleteRow(r.getRow());
+    }
+  }
+}
